@@ -6,13 +6,13 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsc -p tsconfig.plugin.json",
+    "dev": "tsc -p tsconfig.plugin.json --watch",
     "prepublishOnly": "npm run build",
     "lint": "biome check --config-path=. src/",
     "lint:fix": "biome check --config-path=. --fix src/",
     "format": "biome format --config-path=. --write src/",
-    "check": "biome check --config-path=. src/ && tsc --noEmit",
+    "check": "biome check --config-path=. src/ && tsc -p tsconfig.plugin.json --noEmit",
     "test": "vitest run"
   },
   "keywords": [
