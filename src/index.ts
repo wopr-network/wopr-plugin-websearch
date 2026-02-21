@@ -97,9 +97,7 @@ const plugin: WOPRPlugin = {
     // Register A2A server
     if (ctx.registerA2AServer) {
       ctx.registerA2AServer(buildWebSearchA2ATools({}));
-      cleanups.push(() => {
-        // A2A server cleanup is handled by the platform on unregister
-      });
+      // A2A server cleanup is handled by the platform on unregister
     }
 
     ctx.log.info("Web search plugin initialized");
