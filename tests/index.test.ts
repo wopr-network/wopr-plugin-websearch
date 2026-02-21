@@ -37,6 +37,7 @@ function mockCtx() {
     },
     registerA2AServer: vi.fn(),
     registerExtension: vi.fn(),
+    registerConfigSchema: vi.fn(),
     log: { info: vi.fn(), error: vi.fn(), warn: vi.fn(), debug: vi.fn() },
     getConfig: vi.fn().mockReturnValue({}),
   };
@@ -112,6 +113,39 @@ describe("wopr-plugin-websearch", () => {
 
     it("should handle shutdown", async () => {
       await expect(plugin.shutdown!()).resolves.toBeUndefined();
+    });
+
+    it("should have a manifest with required fields", () => {
+      expect(plugin.manifest).toBeDefined();
+      expect(plugin.manifest!.name).toBe("@wopr-network/wopr-plugin-websearch");
+      expect(plugin.manifest!.capabilities).toContain("web-search");
+      expect(plugin.manifest!.category).toBe("search");
+      expect(plugin.manifest!.tags).toEqual(expect.arrayContaining(["web-search", "brave", "google", "xai"]));
+      expect(plugin.manifest!.icon).toBe("search");
+      expect(plugin.manifest!.requires?.network?.outbound).toBe(true);
+      expect(plugin.manifest!.provides?.capabilities).toHaveLength(1);
+      expect(plugin.manifest!.provides?.capabilities[0].type).toBe("web-search");
+      expect(plugin.manifest!.lifecycle?.shutdownBehavior).toBe("graceful");
+    });
+
+    it("should register config schema on init", async () => {
+      const ctx = mockCtx();
+      await plugin.init(ctx as any);
+      expect(ctx.registerConfigSchema).toHaveBeenCalledTimes(1);
+      expect(ctx.registerConfigSchema).toHaveBeenCalledWith(
+        "wopr-plugin-websearch",
+        expect.objectContaining({ title: "Web Search" }),
+      );
+    });
+
+    it("should survive init-shutdown-init cycle", async () => {
+      const ctx = mockCtx();
+      await plugin.init(ctx as any);
+      await plugin.shutdown!();
+      // Second init should work cleanly
+      await plugin.init(ctx as any);
+      expect(ctx.registerA2AServer).toHaveBeenCalledTimes(2);
+      expect(ctx.registerConfigSchema).toHaveBeenCalledTimes(2);
     });
   });
 
