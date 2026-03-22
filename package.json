@@ -30,6 +30,20 @@
     "name": "wopr-plugin-websearch",
     "version": "1.0.0",
     "description": "Web search via Brave, Google, and xAI",
+    "category": "tools",
+    "requires": {
+      "env": [
+        "BRAVE_SEARCH_API_KEY",
+        "GOOGLE_SEARCH_API_KEY",
+        "GOOGLE_SEARCH_CX",
+        "XAI_API_KEY"
+      ],
+      "config": [],
+      "bins": []
+    },
+    "lifecycle": {
+      "shutdownBehavior": "graceful"
+    },
     "provides": {
       "capabilities": [
         {
