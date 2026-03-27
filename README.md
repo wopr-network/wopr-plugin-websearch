@@ -1,3 +1,11 @@
+# ⚠️ This package has moved
+
+This package is now maintained in the [wopr-plugins monorepo](https://github.com/wopr-network/wopr-plugins/tree/main/packages/plugin-websearch).
+
+This repository is archived and no longer accepts contributions.
+
+---
+
 # @wopr-network/wopr-plugin-websearch
 
 > Web search plugin for WOPR — real-time search via Brave, Google, and xAI with automatic fallback and SSRF protection.
